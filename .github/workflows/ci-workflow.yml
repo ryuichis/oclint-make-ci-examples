@@ -1,0 +1,26 @@
+name: Actions CI
+on: [push]
+
+jobs:
+  darwin-x86_64:
+    name: darwin-x86_64
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja
+      - run: sh run.sh
+  linux-x86_64:
+    name: linux-x86_64
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - run: |
+          sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+          sudo apt-get update -q
+          sudo apt-get install gcc-7 g++-7 -y --allow-unauthenticated
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 50
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 50
+          sudo rm -rf /usr/local/clang-7.0.0
+          sudo rm -rf /usr/lib/llvm-6.0
+          sudo apt-get install ninja-build -y
+      - run: sh run.sh
