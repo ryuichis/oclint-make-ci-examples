@@ -1,3 +1,5 @@
 #! /bin/sh -e
 
-echo "Hello World!"
+git clone https://github.com/oclint/oclint.git
+cd oclint/oclint-scripts
+./make
